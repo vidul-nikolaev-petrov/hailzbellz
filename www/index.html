@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://localhost:35729">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link type="text/css" href="http://csshake.surge.sh/csshake-slow.min.css">
+
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+    <script src="cordova.js"></script>
+
+    <!-- JS library for web audio -->
+    <script src="lib/js/howler.min.js"></script>
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/factories.js"></script>
+    <script src="js/services.js"></script>
+</head>
+
+<body ng-app="starter" ng-controller="MainController">
+    <ion-pane>
+        <ion-header-bar class="custom">
+            <img src="img/logo.png" class="my-logo">
+            <h1 class="title">Hailzbellz</h1>
+        </ion-header-bar>
+        <ion-content class="center">
+            <div class="row">
+                <div class="col">
+                    <button class="button button-block button-balanced" ng-click="play(); model.playing = true;" ng-if="!model.playing && !model.pause" id="play-now">Play Now</button>
+                    <button class="button button-block button-balanced" ng-if="model.playing && !model.pause" id="playing">Playing</button>
+                    <button class="button button-block button-balanced" ng-if="model.pause" id="paused">Paused</button>
+                </div>
+            </div>
+        </ion-content>
+
+        <ion-footer-bar class="my-footer">
+            <div class="row">
+                <div class="col text-left">
+                    <a href class="button my-button icon ion-more" ng-click="modal_about.show()">
+                    </a>
+                </div>
+                <div class="col text-center">
+                    <a href class="button my-button icon ion-power" ng-click="pause()">
+                    </a>
+                </div>
+                <div class="col text-right">
+                    <a href class="button my-button icon ion-android-options" ng-click="modal_settings.show()">
+                    </a>
+                </div>
+            </div>
+        </ion-footer-bar>
+
+        <script id="modal-about.html" type="text/ng-template">
+            <ion-modal-view>
+                <ion-header-bar class="custom">
+                    <img src="img/logo.png" class="my-logo">
+                    <h1 class="title text-left">About</h1>
+                    <a href class="button my-button icon ion-close my-icon" ng-click="modal_about.hide()">
+                    </a>
+                </ion-header-bar>
+                <ion-content class="padding">
+
+                    <br>
+                    <div class="item item-divider">
+                        Usage
+                    </div>
+                    <div class="item item-text-wrap my-item">
+                        There are two options:
+                        <ul>
+                            <li>Just shake the phone</li>
+                            <li>Click the button "Play Now"</li>
+                        </ul>
+                    </div>
+
+                    <br>
+                    <div class="item item-divider">
+                        Settings
+                    </div>
+                    <div class="item item-text-wrap my-item">
+                        Click the button in the bottom right corner.
+                    </div>
+
+                    <br>
+                    <div class="item item-divider">
+                        Contributors
+                    </div>
+                    <div class="item item-text-wrap my-item">
+                        <ul>
+                            <li>Scooter</li>
+                            <li>Shane Fair</li>
+                        </ul>
+                    </div>
+
+                    <br>
+                    <div class="item item-divider">
+                        Author
+                    </div>
+                    <div class="item item-text-wrap my-item">
+                        Vidul Nikolaev Petrov
+                    </div>
+
+                </ion-content>
+                <ion-footer-bar class="custom">
+                    <a href ng-click="modal_about.hide()">
+                        <h1 class="title text-center">
+                            Close
+                        </h1>
+                    </a>
+                </ion-footer-bar>
+            </ion-modal-view>
+        </script>
+
+        <script id="modal-settings.html" type="text/ng-template">
+            <ion-modal-view>
+                <ion-header-bar class="custom">
+                    <img src="img/logo.png" class="my-logo">
+                    <h1 class="title">Settings</h1>
+                    <a href class="button my-button icon ion-close my-icon" ng-click="modal_settings.hide()">
+                    </a>
+                </ion-header-bar>
+                <ion-content class="padding">
+                    <div class="list">
+                        <div class="item item-divider">
+                            Volume control
+                        </div>
+                        <div class="item range">
+                            <i class="icon ion-volume-low"></i>
+                            <input type="range" name="volume" min="0.1" max="1" step="0.1" ng-model="settings.volume" ng-change="setVolume()">
+                            <i class="icon ion-volume-high"></i>
+                        </div>
+                    </div>
+                    <div class="list">
+                        <div class="item item-divider">
+                            Shake sensitivity
+                        </div>
+                        <div class="item range">
+                            <i class="icon ion-flash-off"></i>
+                            <input type="range" name="volume" value="90" min="15" max="50" ng-model="settings.shake" ng-change="setShake()">
+                            <i class="icon ion-flash"></i>
+                        </div>
+                    </div>
+                </ion-content>
+                <ion-footer-bar class="custom" style="boder: 0 !important">
+                    <a href ng-click="modal_settings.hide()">
+                        <h1 class="title text-center">
+                            Close
+                        </h1>
+                    </a>
+                </ion-footer-bar>
+            </ion-modal-view>
+        </script>
+
+    </ion-pane>
+</body>
+
+</html>
